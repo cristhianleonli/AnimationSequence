@@ -173,14 +173,23 @@ public extension AnimationSequence {
 // MARK: - Private functions
 
 private extension AnimationSequence {
+    /// Defaults the given duration to base configuration or AnimationConfiguration otherwise.
+    /// - Parameter value: Double with duration
+    /// - Returns: Calculated default duration
     func lastDuration(value: Double?) -> Double {
         return value ?? defaultConfiguration?.duration ?? AnimationConfiguration.defaultDuration
     }
     
+    /// Defaults the given delay to base configuration or AnimationConfiguration otherwise.
+    /// - Parameter value: Double with delay
+    /// - Returns: Calculated default delay
     func lastDelay(value: Double?) -> Double {
         return value ?? defaultConfiguration?.delay ?? AnimationConfiguration.defaultDelay
     }
     
+    /// Defaults the given easing to base configuration or AnimationConfiguration otherwise.
+    /// - Parameter value: AnimationEasing
+    /// - Returns: Calculated default easing
     func lastEasing(value: Easing?) -> Easing {
         return value ?? defaultConfiguration?.easing ?? AnimationConfiguration.defaultEasing
     }

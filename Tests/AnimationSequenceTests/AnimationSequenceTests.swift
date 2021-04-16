@@ -1,4 +1,5 @@
 import XCTest
+import SwiftUI
 import AnimationSequence
 
 final class AnimationSequenceTests: XCTestCase {
@@ -14,19 +15,18 @@ final class AnimationSequenceTests: XCTestCase {
             .baseConfig(duration: 0.4, delay: 0.3, easing: .easeIn)
             // add sequential animation with default values
             .append {
-                
             }
             // add sequential animation with specific values
             .append(duration: 0.4, delay: 0.2, easing: .linear) {
-                
+            }
+            // add sequential animation with custom SwiftUI.animation
+            .append(easing: .custom(animation: Animation.spring(response: 1, dampingFraction: 0.80, blendDuration: 0.6))) {
             }
             // add async animation with default values
             .async {
-                
             }
             // add async animation with specific values
             .async(duration: 0.3, delay: 0.2, easing: .easeIn) {
-                
             }
             // sleep
             .wait(for: 5)

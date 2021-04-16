@@ -7,8 +7,7 @@ public enum AnimationEasing {
     case easeOut
     case easeInOut
     case linear
-    case spring(response: Double, dampingFraction: Double, blendDuration: Double)
-    case interpolatingSpring(mass: Double, stiffness: Double, damping: Double, initialVelocity: Double)
+    case custom(animation: Animation)
 }
 
 // small convenient alias to avoid typing the closure signature everywhere
@@ -56,19 +55,8 @@ extension AnimationConfiguration {
             return Animation.easeInOut(duration: duration)
         case .linear:
             return Animation.linear(duration: duration)
-        case .spring(let response, let dampingFraction, let blendDuration):
-            return Animation.spring(
-                response: response,
-                dampingFraction: dampingFraction,
-                blendDuration: blendDuration
-            )
-        case .interpolatingSpring(let mass, let stiffness, let damping, let initialVelocity):
-            return Animation.interpolatingSpring(
-                mass: mass,
-                stiffness: stiffness,
-                damping: damping,
-                initialVelocity: initialVelocity
-            )
+        case .custom(let animation):
+            return animation
         }
     }
 }
