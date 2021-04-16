@@ -6,13 +6,11 @@ final class AnimationSequenceTests: XCTestCase {
     func testAnimationSequence() {
         AnimationSequence()
             // verbose default true
-            .verbose()
-            // verbose set value
-            .verbose(value: false)
+            .debug()
             // base configuration default values
-            .baseConfig()
+            .commonConfig()
             // base configuration set values
-            .baseConfig(duration: 0.4, delay: 0.3, easing: .easeIn)
+            .commonConfig(duration: 0.4, delay: 0.3, easing: .easeIn)
             // add sequential animation with default values
             .append {
             }
@@ -34,12 +32,12 @@ final class AnimationSequenceTests: XCTestCase {
     }
     
     func testConstants() {
-        XCTAssertEqual(AnimationConfiguration.defaultDelay, 0, "Default delay should be always 0")
-        XCTAssertEqual(AnimationConfiguration.defaultDuration, 0.1, "Default delay should be 0.1")
+        XCTAssertEqual(AnimationDefaults.defaultDelay, 0, "Default delay should be always 0")
+        XCTAssertEqual(AnimationDefaults.defaultDuration, 0.1, "Default delay should be 0.1")
     }
     
     func testDefaultEasing() {
-        let defaultEasing = AnimationConfiguration.defaultEasing
+        let defaultEasing = AnimationDefaults.defaultEasing
         
         switch defaultEasing {
         case .default:

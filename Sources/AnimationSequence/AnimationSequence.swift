@@ -17,9 +17,9 @@ public class AnimationSequence {
     
     // MARK: Life cycle
     
-    public init(duration: Double = AnimationConfiguration.defaultDuration,
-                delay: Double = AnimationConfiguration.defaultDelay,
-                easing: Easing = AnimationConfiguration.defaultEasing) {
+    public init(duration: Double = AnimationDefaults.defaultDuration,
+                delay: Double = AnimationDefaults.defaultDelay,
+                easing: Easing = AnimationDefaults.defaultEasing) {
         self.defaultConfiguration = AnimationConfiguration(
             duration: duration,
             delay: delay,
@@ -81,10 +81,9 @@ public extension AnimationSequence {
     ///   - easing: Default easing function for all animation in the sequence
     /// - Returns: self instance
     @discardableResult
-    
-    func baseConfig(duration: Double = AnimationConfiguration.defaultDuration,
-                    delay: Double = AnimationConfiguration.defaultDelay,
-                    easing: Easing = AnimationConfiguration.defaultEasing) -> AnimationSequence {
+    func commonConfig(duration: Double = AnimationDefaults.defaultDuration,
+                    delay: Double = AnimationDefaults.defaultDelay,
+                    easing: Easing = AnimationDefaults.defaultEasing) -> AnimationSequence {
         defaultConfiguration = AnimationConfiguration(
             duration: duration,
             delay: delay,
@@ -155,8 +154,8 @@ public extension AnimationSequence {
     /// - Parameter value: Boolean with the value to be set
     /// - Returns: self instance
     @discardableResult
-    func verbose(value: Bool = true) -> AnimationSequence {
-        self.verbose = value
+    func debug() -> AnimationSequence {
+        self.verbose = true
         return self
     }
     
@@ -177,20 +176,20 @@ private extension AnimationSequence {
     /// - Parameter value: Double with duration
     /// - Returns: Calculated default duration
     func lastDuration(value: Double?) -> Double {
-        return value ?? defaultConfiguration?.duration ?? AnimationConfiguration.defaultDuration
+        return value ?? defaultConfiguration?.duration ?? AnimationDefaults.defaultDuration
     }
     
     /// Defaults the given delay to base configuration or AnimationConfiguration otherwise.
     /// - Parameter value: Double with delay
     /// - Returns: Calculated default delay
     func lastDelay(value: Double?) -> Double {
-        return value ?? defaultConfiguration?.delay ?? AnimationConfiguration.defaultDelay
+        return value ?? defaultConfiguration?.delay ?? AnimationDefaults.defaultDelay
     }
     
     /// Defaults the given easing to base configuration or AnimationConfiguration otherwise.
     /// - Parameter value: AnimationEasing
     /// - Returns: Calculated default easing
     func lastEasing(value: Easing?) -> Easing {
-        return value ?? defaultConfiguration?.easing ?? AnimationConfiguration.defaultEasing
+        return value ?? defaultConfiguration?.easing ?? AnimationDefaults.defaultEasing
     }
 }

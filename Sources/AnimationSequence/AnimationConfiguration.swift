@@ -13,13 +13,16 @@ public enum AnimationEasing {
 // small convenient alias to avoid typing the closure signature everywhere
 public typealias AnimationBlock = () -> Void
 
-public class AnimationConfiguration {
-    
-    // MARK: - Default values
-    
+
+// MARK: - Default values
+
+public struct AnimationDefaults {
     public static let defaultDuration: Double = 0.1
     public static let defaultDelay: Double = 0
     public static let defaultEasing: AnimationEasing = .default
+}
+
+public class AnimationConfiguration {
     
     // MARK: - Properties
     
