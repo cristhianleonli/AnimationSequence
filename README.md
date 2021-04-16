@@ -2,6 +2,18 @@
 
 SwiftUI tool that allows building complex sequence of animations more easily by hiding animation dispatching details.
 
+## Platforms
+- iOS(.v13)
+- tvOS(.v13)
+- watchOS(.v6)
+- macOS(.v11)
+
+## What's in the box
+- `AnimationSequence.swift`
+- `AnimationConfiguration.swift`
+- `AnimationEasing`
+- `AnimationDefaults`
+
 ## Usage
 
 `AnimationSequence` is meant to be flexible enough to allow you write more readable code. Here you have some many examples of what it looks like to write animation sequences. As almost all parameters are optional and nil by default(similar to SwiftUI syntax), it will let you write animation blocks more easily.
@@ -75,8 +87,9 @@ AnimationSequence()
 ### Async
 Appending animations will always keep them one after the other, but in case you need an animation triggered but not awaited, async is the solution. Let's pictures the animation sequence as follows:
 ```swift
-A   |>  B   |>  C   |> E
-            |>  D
+ (A)==>(B)==|      |==>(E)
+            |==>(C)
+            |==>(D)
 
 // Animation A starts, then comes B, at that moment, we trigger C and D without waiting for them.
 // then finally, right after B, comes E and the sequence ends.
@@ -134,6 +147,10 @@ AnimationSequence()
     .start()
 ```
 
-### Contribution
+## To do
+- Debug more animation details
+- 
 
-If you find the project interesting, catch any mistakes I've made, or just see room for improvement, feel free to fork and contribute, I'll be more than glad.
+## Contribution
+
+If you find the project interesting, catch any mistakes I've made, or just see room for improvement, feel free to fork and contribute, I'll be more than happy.

@@ -1,5 +1,4 @@
 import SwiftUI
-import Foundation
 
 public class AnimationSequence {
     
