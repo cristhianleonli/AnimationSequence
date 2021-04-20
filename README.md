@@ -149,7 +149,7 @@ AnimationSequence()
 
 ## To do
 - Debug more animation details
-- 
+- Create project sample
 
 ## Contribution
 
