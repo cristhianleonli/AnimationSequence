@@ -10,18 +10,22 @@ public class AnimationSequence {
     // MARK: - Properties
     
     private var animations: [AnimationConfiguration] = []
-    private var callback: Block?
+    private var finishCallback: Block?
     private var defaultConfiguration: AnimationConfiguration?
     private var verbose: Bool = false
+    private var currentID: Int = 0
     
     // MARK: Life cycle
     
-    public init(duration: Double = AnimationDefaults.defaultDuration,
-                delay: Double = AnimationDefaults.defaultDelay,
-                easing: Easing = AnimationDefaults.defaultEasing) {
+    public init(
+        duration: Double = AnimationDefaults.defaultDuration,
+        delay: Double = AnimationDefaults.defaultDelay,
+        easing: Easing = AnimationDefaults.defaultEasing
+    ) {
         self.defaultConfiguration = AnimationConfiguration(
-            duration: duration,
+            label: "default",
             delay: delay,
+            duration: duration,
             easing: easing
         )
     }
@@ -35,9 +39,12 @@ public extension AnimationSequence {
     /// executed properly. After all animations are triggered, one last
     /// dispatch from the main queue will execute the onFinish callback.
     ///
-    /// When an animation is async, meaning, it won't be awaited, this animation
-    /// duration is not accumulated, hence ignored in the sequence. Basically its
-    /// values gets skep and won't affect the behaviour of the other animations.
+    /// When an animation is async, means, it won't be awaited, this animation
+    /// duration is not accumulated, hence ignored in the overall sequence. Its
+    /// values are skept and won't affect the behavior of the other animations.
+    ///
+    /// Once the whole sequence is finished, the `onFinishCallback`, if provided,
+    /// is called. Async animations are not part of the sequence timing.
     func start() {
         var offsetTime: Double = 0
         
@@ -45,30 +52,32 @@ public extension AnimationSequence {
             // creates the respective function given the duration
             let animation = config.easingFunction
             
-            // set the offset for when the next animation should start at
-            offsetTime += config.delay
+            if self.verbose {
+                print("Enqueued:", config)
+            }
             
-            // executes the animation with the predefined offset
-            withAnimation(animation.delay(offsetTime)) {
-                // animate the "block" with the given animation parameters
+            DispatchQueue.main.asyncAfter(deadline: .now() + offsetTime + config.delay) {
                 if self.verbose {
-                    print(animation)
+                    print("Dispatched: ", config)
                 }
                 
-                config.block?()
+                withAnimation(animation) {
+                    config.animation?()
+                }
             }
             
             if !config.isAsync {
                 offsetTime += config.duration
+                offsetTime += config.delay
             }
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + offsetTime) {
             if self.verbose {
-                print("Animation sequence has finished")
+                print("Animation sequence finished")
             }
             
-            self.callback?()
+            self.finishCallback?()
         }
     }
     
@@ -84,8 +93,9 @@ public extension AnimationSequence {
                     delay: Double = AnimationDefaults.defaultDelay,
                     easing: Easing = AnimationDefaults.defaultEasing) -> AnimationSequence {
         defaultConfiguration = AnimationConfiguration(
-            duration: duration,
+            label: "default",
             delay: delay,
+            duration: duration,
             easing: easing
         )
         
@@ -94,18 +104,27 @@ public extension AnimationSequence {
     
     /// Adds an animation that will be trigger sequentially
     /// - Parameters:
-    ///   - duration: Double animation duration, if nil, default duration will be set
-    ///   - delay: Double animation delay, if nil, default delay will be set
-    ///   - easing: AnimationEasing, if nil, .default will be set
-    ///   - closure: The actions to be executed when the animation is dispatched
+    ///   - label: String to identify the animation
+    ///   - delay: Double animation delay. Default `0.0`
+    ///   - duration: Double animation duration. Default `0.1`
+    ///   - easing: AnimationEasing. Default `default`
+    ///   - animation: The actions to be executed when the animation is dispatched
     /// - Returns: self instance
     @discardableResult
-    func append(duration: Double? = nil, delay: Double? = nil, easing: Easing? = nil, closure: @escaping Block) -> AnimationSequence {
+    func add(
+        label: String? = nil,
+        delay: Double? = nil,
+        duration: Double? = nil,
+        easing: Easing? = nil,
+        animation closure: @escaping Block
+    ) -> AnimationSequence {
         let animation = AnimationConfiguration(
-            duration: lastDuration(value: duration),
-            delay: lastDelay(value: delay),
-            easing: lastEasing(value: easing),
-            block: closure
+            label: getLabel(value: label),
+            delay: getDelay(value: delay),
+            duration: getDuration(value: duration),
+            easing: getEasing(value: easing),
+            animation: closure,
+            isAsync: false
         )
         
         animations.append(animation)
@@ -114,27 +133,34 @@ public extension AnimationSequence {
     
     /// Adds a animation that will be triggered asynchronously and will not be awaited
     /// - Parameters:
-    ///   - duration: Double animation duration, if nil, default duration will be set
-    ///   - delay: Double animation delay, if nil, default delay will be set
-    ///   - easing: AnimationEasing, if nil, .default will be set
-    ///   - closure: The actions to be executed when the animation is dispatched
+    ///   - label: String to identify the animation
+    ///   - delay: Double animation delay. Default `0.0`
+    ///   - duration: Double animation duration. Default `0.1`
+    ///   - easing: AnimationEasing. Default `default`
+    ///   - animation: The actions to be executed when the animation is dispatched
     /// - Returns: self instance
     @discardableResult
-    func async(duration: Double? = nil, delay: Double? = nil, easing: Easing? = nil, closure: @escaping Block) -> AnimationSequence {
+    func async(
+        label: String? = nil,
+        delay: Double? = nil,
+        duration: Double? = nil,
+        easing: Easing? = nil,
+        animation: @escaping Block
+    ) -> AnimationSequence {
         let animation = AnimationConfiguration(
-            duration: lastDuration(value: duration),
-            delay: lastDelay(value: delay),
-            easing: lastEasing(value: easing),
-            block: closure
+            label: getLabel(value: label),
+            delay: getDelay(value: delay),
+            duration: getDuration(value: duration),
+            easing: getEasing(value: easing),
+            animation: animation,
+            isAsync: true
         )
-        
-        animation.isAsync = true
         
         animations.append(animation)
         return self
     }
     
-    /// Adds the seconds value as delay to the last non-async animation
+    /// Adds the value as delay to the last non-async animation
     /// - Parameter seconds: Double with the waiting time
     /// - Returns: self instance
     @discardableResult
@@ -149,7 +175,7 @@ public extension AnimationSequence {
         return self
     }
     
-    /// Enables the debug mode, which will print when animations are executed
+    /// Enables the debug mode, which will print when animations are enqueued, and dispatched
     /// - Parameter value: Boolean with the value to be set
     /// - Returns: self instance
     @discardableResult
@@ -158,12 +184,12 @@ public extension AnimationSequence {
         return self
     }
     
-    /// Add a callback to the animation sequence
-    /// - Parameter closure: () -> Void block
+    /// Adds a callback to the animation sequence
+    /// - Parameter callback: () -> Void block
     /// - Returns: self instance
     @discardableResult
-    func onFinish(closure: @escaping Block) -> AnimationSequence {
-        self.callback = closure
+    func onFinish(callback: @escaping Block) -> AnimationSequence {
+        self.finishCallback = callback
         return self
     }
 }
@@ -171,24 +197,29 @@ public extension AnimationSequence {
 // MARK: - Private functions
 
 private extension AnimationSequence {
-    /// Defaults the given duration to base configuration or AnimationConfiguration otherwise.
+    /// Defaults the given duration to base configuration or AnimationConfiguration otherwise
     /// - Parameter value: Double with duration
     /// - Returns: Calculated default duration
-    func lastDuration(value: Double?) -> Double {
+    func getDuration(value: Double?) -> Double {
         return value ?? defaultConfiguration?.duration ?? AnimationDefaults.defaultDuration
     }
     
-    /// Defaults the given delay to base configuration or AnimationConfiguration otherwise.
+    /// Defaults the given delay to base configuration or AnimationConfiguration otherwise
     /// - Parameter value: Double with delay
     /// - Returns: Calculated default delay
-    func lastDelay(value: Double?) -> Double {
+    func getDelay(value: Double?) -> Double {
         return value ?? defaultConfiguration?.delay ?? AnimationDefaults.defaultDelay
     }
     
     /// Defaults the given easing to base configuration or AnimationConfiguration otherwise.
     /// - Parameter value: AnimationEasing
     /// - Returns: Calculated default easing
-    func lastEasing(value: Easing?) -> Easing {
+    func getEasing(value: Easing?) -> Easing {
         return value ?? defaultConfiguration?.easing ?? AnimationDefaults.defaultEasing
+    }
+    
+    func getLabel(value: String?) -> String {
+        defer { currentID += 1 }
+        return value ?? "\(currentID)"
     }
 }
