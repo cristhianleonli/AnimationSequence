@@ -89,9 +89,11 @@ public extension AnimationSequence {
     ///   - easing: Default easing function for all animation in the sequence
     /// - Returns: self instance
     @discardableResult
-    func commonConfig(duration: Double = AnimationDefaults.defaultDuration,
-                    delay: Double = AnimationDefaults.defaultDelay,
-                    easing: Easing = AnimationDefaults.defaultEasing) -> AnimationSequence {
+    func commonConfig(
+        duration: Double = AnimationDefaults.defaultDuration,
+        delay: Double = AnimationDefaults.defaultDelay,
+        easing: Easing = AnimationDefaults.defaultEasing
+    ) -> AnimationSequence {
         defaultConfiguration = AnimationConfiguration(
             label: "default",
             delay: delay,
