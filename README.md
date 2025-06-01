@@ -14,6 +14,14 @@ SwiftUI tool that allows building animation sequences more easily by hiding disp
 - `AnimationEasing`
 - `AnimationDefaults`
 
+## Swift Package Manager
+Add the Swift package to your Package.swift file:
+
+```swift
+dependencies: [
+    .package(url: "https://github.com/cristhianleonli/AnimationSequence.git", .upToNextMajor(from: "0.0.1"))
+]
+```
 
 ## Demo
 
