@@ -22,9 +22,7 @@ public struct AnimationDefaults {
 }
 
 public class AnimationConfiguration: CustomStringConvertible {
-    
     // MARK: - Properties
-    
     public var label: String
     public var delay: Double
     public var duration: Double
@@ -33,7 +31,6 @@ public class AnimationConfiguration: CustomStringConvertible {
     public var isAsync: Bool
     
     // MARK: - Life cycle
-    
     public init(
         label: String,
         delay: Double,

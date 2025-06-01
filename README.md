@@ -14,6 +14,13 @@ SwiftUI tool that allows building animation sequences more easily by hiding disp
 - `AnimationEasing`
 - `AnimationDefaults`
 
+
+## Demo
+
+| Example 1 | Example 2 |
+|-----------------|-------------|
+| ![anim1](DemoApp/anim1.gif) | ![anim2](DemoApp/anim2.gif) |
+
 ## Usage
 
 `AnimationSequence` is meant to be flexible enough to allow you write more readable code. Here you have some many examples of what it looks like to write animation sequences. As almost all parameters are optional and nil by default(similar to SwiftUI syntax), it will let you write animation blocks more easily.

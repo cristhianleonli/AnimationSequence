@@ -53,7 +53,7 @@ final class AnimationSequenceTests: XCTestCase {
         let delay: Double = 0.2
         
         // When
-        let config = AnimationConfiguration(delay: delay, duration: duration, easing: .easeIn)
+        let config = AnimationConfiguration(label: "a1", delay: delay, duration: duration, easing: .easeIn)
         
         // Then
         XCTAssertEqual(config.delay, delay, "Delay should be \(delay)")
