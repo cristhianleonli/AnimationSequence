@@ -1,30 +1,10 @@
 import SwiftUI
 
-// enum that maps the SwiftUI.Animation options
-public enum AnimationEasing {
-    case `default`
-    case easeIn
-    case easeOut
-    case easeInOut
-    case linear
-    case custom(animation: Animation)
-}
-
 // Used to provide animation blocks, and any type of callback
 public typealias AnimationBlock = () -> Void
 
-// MARK: - Default values
-
-public struct AnimationDefaults {
-    public static let defaultDelay: Double = 0
-    public static let defaultDuration: Double = 0.1
-    public static let defaultEasing: AnimationEasing = .default
-}
-
 public class AnimationConfiguration: CustomStringConvertible {
-    
     // MARK: - Properties
-    
     public var label: String
     public var delay: Double
     public var duration: Double
@@ -33,7 +13,6 @@ public class AnimationConfiguration: CustomStringConvertible {
     public var isAsync: Bool
     
     // MARK: - Life cycle
-    
     public init(
         label: String,
         delay: Double,

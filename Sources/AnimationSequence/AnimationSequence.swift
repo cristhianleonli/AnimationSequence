@@ -41,7 +41,7 @@ public extension AnimationSequence {
     ///
     /// When an animation is async, means, it won't be awaited, this animation
     /// duration is not accumulated, hence ignored in the overall sequence. Its
-    /// values are skept and won't affect the behavior of the other animations.
+    /// values are skept, and won't affect the behavior of the remaining animations.
     ///
     /// Once the whole sequence is finished, the `onFinishCallback`, if provided,
     /// is called. Async animations are not part of the sequence timing.
@@ -90,8 +90,8 @@ public extension AnimationSequence {
     /// - Returns: self instance
     @discardableResult
     func commonConfig(
-        duration: Double = AnimationDefaults.defaultDuration,
         delay: Double = AnimationDefaults.defaultDelay,
+        duration: Double = AnimationDefaults.defaultDuration,
         easing: Easing = AnimationDefaults.defaultEasing
     ) -> AnimationSequence {
         defaultConfiguration = AnimationConfiguration(
@@ -133,7 +133,7 @@ public extension AnimationSequence {
         return self
     }
     
-    /// Adds a animation that will be triggered asynchronously and will not be awaited
+    /// Adds an animation that will be triggered asynchronously and will not be awaited
     /// - Parameters:
     ///   - label: String to identify the animation
     ///   - delay: Double animation delay. Default `0.0`
@@ -162,7 +162,7 @@ public extension AnimationSequence {
         return self
     }
     
-    /// Adds the value as delay to the last non-async animation
+    /// Adds the value as the delay to the last non-async animation
     /// - Parameter seconds: Double with the waiting time
     /// - Returns: self instance
     @discardableResult
@@ -186,7 +186,7 @@ public extension AnimationSequence {
         return self
     }
     
-    /// Adds a callback to the animation sequence
+    /// Adds a callback to the entire animation sequence
     /// - Parameter callback: () -> Void block
     /// - Returns: self instance
     @discardableResult
