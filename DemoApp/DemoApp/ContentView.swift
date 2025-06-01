@@ -6,19 +6,16 @@
 //
 
 import SwiftUI
-//import AnimationSequence
 
 struct ContentView: View {
-//    var r = AnimationSequence(duration: 0.5, delay: 0, easing: .default)
-    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            List {
+                NavigationLink("Simple animation", destination: SimpleAnim())
+                NavigationLink("Advanced animation", destination: AdvancedAnim())
+            }
+            .navigationTitle("Demo App")
         }
-        .padding()
     }
 }
 

@@ -10,21 +10,21 @@ final class AnimationSequenceTests: XCTestCase {
             // base configuration default values
             .commonConfig()
             // base configuration set values
-            .commonConfig(duration: 0.4, delay: 0.3, easing: .easeIn)
+            .commonConfig(delay: 0.3, duration: 0.4, easing: .easeIn)
             // add sequential animation with default values
-            .append {
+            .add {
             }
             // add sequential animation with specific values
-            .append(duration: 0.4, delay: 0.2, easing: .linear) {
+            .add(delay: 0.2, duration: 0.4, easing: .linear) {
             }
             // add sequential animation with custom SwiftUI.animation
-            .append(easing: .custom(animation: Animation.spring(response: 1, dampingFraction: 0.80, blendDuration: 0.6))) {
+            .add(easing: .custom(animation: Animation.spring(response: 1, dampingFraction: 0.80, blendDuration: 0.6))) {
             }
             // add async animation with default values
             .async {
             }
             // add async animation with specific values
-            .async(duration: 0.3, delay: 0.2, easing: .easeIn) {
+            .async(delay: 0.2, duration: 0.3, easing: .easeIn) {
             }
             // sleep
             .wait(for: 5)
@@ -53,11 +53,11 @@ final class AnimationSequenceTests: XCTestCase {
         let delay: Double = 0.2
         
         // When
-        let config = AnimationConfiguration(duration: duration, delay: delay, easing: .easeIn)
+        let config = AnimationConfiguration(delay: delay, duration: duration, easing: .easeIn)
         
         // Then
-        XCTAssertEqual(config.duration, duration, "Duration should be \(duration)")
         XCTAssertEqual(config.delay, delay, "Delay should be \(delay)")
+        XCTAssertEqual(config.duration, duration, "Duration should be \(duration)")
         
         switch config.easing {
         case .easeIn:
