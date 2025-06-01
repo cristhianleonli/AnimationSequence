@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9F99DA0E2DEC924E00A677BE /* AnimationSequence in Frameworks */ = {isa = PBXBuildFile; productRef = 9F99DA0D2DEC924E00A677BE /* AnimationSequence */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		9F2BCF0B2DEC8EB00086C7C4 /* DemoApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DemoApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F99DA0E2DEC924E00A677BE /* AnimationSequence in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +70,7 @@
 			);
 			name = DemoApp;
 			packageProductDependencies = (
+				9F99DA0D2DEC924E00A677BE /* AnimationSequence */,
 			);
 			productName = DemoApp;
 			productReference = 9F2BCF0B2DEC8EB00086C7C4 /* DemoApp.app */;
@@ -95,6 +101,7 @@
 			mainGroup = 9F2BCF022DEC8EB00086C7C4;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+				9F99DA0C2DEC924E00A677BE /* XCLocalSwiftPackageReference "../../AnimationSequence" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 9F2BCF0C2DEC8EB00086C7C4 /* Products */;
@@ -322,6 +329,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		9F99DA0C2DEC924E00A677BE /* XCLocalSwiftPackageReference "../../AnimationSequence" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../AnimationSequence;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9F99DA0D2DEC924E00A677BE /* AnimationSequence */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnimationSequence;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9F2BCF032DEC8EB00086C7C4 /* Project object */;
 }
